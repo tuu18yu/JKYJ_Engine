@@ -20,13 +20,19 @@ namespace JKYJ {
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
-	
+		
+		// initialize glfw 
 		if (!glfwInit())
 		{
 			std::cerr << "Failed to initialize GLFW" << std::endl;
 			return;
 		}
 
+		// request 24 bit depth buffer
+		glfwWindowHint(GLFW_DEPTH_BITS, 24);
+		// glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE); by default glfw uses double buffer and rgba
+
+		// create glfw window
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		if (!m_Window)
 		{
@@ -35,17 +41,25 @@ namespace JKYJ {
 			return;
 		}
 
+		// make openGL context current
 		glfwMakeContextCurrent(m_Window);
-		glfwSetWindowUserPointer(m_Window, &m_Data); // stores m_data
 
+		// store m_Data for use inputs
+		glfwSetWindowUserPointer(m_Window, &m_Data);
+
+		// synchronize GPU frame rate with monitor's refresh rate to prevent frame tearing
 		SetVSync(true);
 
+		// initialize GLEW
 		GLenum err = glewInit();
 		if (GLEW_OK != err)
 		{
 			/* Problem: glewInit failed, something is seriously wrong. */
 			fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
 		}
+
+		// enable depth testing 
+		glEnable(GL_DEPTH_TEST);
 
 		// Set input callbacks
 		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -111,7 +125,9 @@ namespace JKYJ {
 				MouseMovedEvent event((float)xPos, (float)yPos);
 				data.EventCallback(event);
 			});
-		std::cout << "Creating window..." << std::endl;
+
+		// get start time
+		m_startTime = glfwGetTime();
 	}
 
 	void WindowsWindow::Shutdown()
@@ -125,14 +141,23 @@ namespace JKYJ {
 	{
 		while (!glfwWindowShouldClose(m_Window))
 		{
-			/* Render here */
-			glClear(GL_COLOR_BUFFER_BIT);
-
-			/* Swap front and back buffers */
-			glfwSwapBuffers(m_Window);
-
-			/* Poll for and process events */
+			// Handle user inputs before drawing
 			glfwPollEvents();
+
+			Render();
+
+			// Swap front and back buffers
+			glfwSwapBuffers(m_Window);
 		}
 	}
+
+	void WindowsWindow::Render()
+	{
+		// clear viewport
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// OpenGL draw calls
+
+	}
+
 }

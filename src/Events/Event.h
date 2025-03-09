@@ -9,10 +9,10 @@ namespace JKYJ
 	enum class EventType
 	{
 		None = 0,
-		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved, // 1 (1), 10 (2), 11 (3), 100 (4), 101 (5)
-		AppTick, AppUpdate, AppRender, // 110 (6), 111 (7), 1000 (8)
-		KeyPressed, KeyReleased, // 1001 (9), 1010 (10)
-		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled // 1011 (11), 1100 (12), 1101 (13), 1110 (14)
+		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
+		AppTick, AppUpdate, AppRender,
+		KeyPressed, KeyReleased,
+		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
 
 #define BIT(x) (1 << x)

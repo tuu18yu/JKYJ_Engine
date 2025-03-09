@@ -14,6 +14,7 @@ namespace JKYJ {
 		virtual ~WindowsWindow();
 
 		void OnUpdate() override;
+		void Render() override;
 
 		unsigned int GetWidth() const override { return m_Data.Width; }
 		unsigned int GetHeight() const override { return m_Data.Height; }
@@ -30,6 +31,8 @@ namespace JKYJ {
 		virtual void Shutdown();
 		GLFWwindow* m_Window;
 		
+		double m_startTime;
+		double m_elapsedTime;
 
 		struct WindowData
 		{

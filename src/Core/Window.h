@@ -30,6 +30,7 @@ namespace JKYJ {
 		virtual ~Window() = default;
 
 		virtual void OnUpdate() = 0;
+		virtual void Render() = 0;
 
 		virtual unsigned int GetWidth() const = 0;
 		virtual unsigned int GetHeight() const = 0;
